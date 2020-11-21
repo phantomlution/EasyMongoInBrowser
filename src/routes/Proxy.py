@@ -3,6 +3,8 @@ from flask import Blueprint, request
 
 proxy_api = Blueprint('proxy_api', __name__, url_prefix='/proxy')
 
+session = requests.Session()
+
 
 @proxy_api.route('/get', methods=['POST'])
 def get_data():
@@ -18,9 +20,11 @@ def get_data():
 
     request_method = params.get('method', 'get')
 
-    request_func = getattr(requests, request_method.lower())
+    request_func = getattr(session, request_method.lower())
 
     resp = request_func(url=url, headers=headers, params=query, data=data)
+
+    resp.close()
 
     return resp.content
 
