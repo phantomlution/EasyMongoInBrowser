@@ -1,5 +1,6 @@
+# -*- coding:utf-8 -*-
 from pymongo import MongoClient
-from bson import ObjectId
+from bson.objectid import ObjectId
 
 mongo_instance = MongoClient('mongodb://localhost:27017')
 

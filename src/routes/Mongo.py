@@ -1,6 +1,7 @@
+# -*- coding:utf-8 -*-
 from flask import Blueprint, request
-from src.utils.decorator import flask_response
-from src.service.MongoService import MongoService
+from utils.decorator import flask_response
+from service.MongoService import MongoService
 
 mongo_api = Blueprint('mongo_api', __name__, url_prefix='/mongo')
 
