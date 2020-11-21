@@ -18,7 +18,7 @@ def get_data():
 
     request_method = params.get('method', 'get')
 
-    request_func = getattr(requests, request_method)
+    request_func = getattr(requests, request_method.lower())
 
     resp = request_func(url=url, headers=headers, params=query, data=data)
 
