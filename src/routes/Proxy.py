@@ -29,3 +29,13 @@ def get_data():
 
     return resp.content
 
+
+@proxy_api.route('/image', methods=['GET'])
+def get_image():
+    url = request.args.get('url')
+
+    resp = session.get(url)
+
+    resp.close()
+
+    return resp.content
