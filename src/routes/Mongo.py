@@ -75,5 +75,6 @@ def list_data():
     db = params['db']
     table_name = params['tableName']
     query = params.get('query', {})
+    projection = params.get('projection', None)
 
-    return MongoService.list(db, table_name, query)
+    return MongoService.list(db, table_name, query, projection)

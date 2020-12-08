@@ -26,14 +26,14 @@ class MongoService:
     def update(db, table_name, query, data):
         format_query(query)
         
-        result = mongo_instance[db][table_name].find_one_and_update(query, { "$set": data }, { "upsert": True })
+        result = mongo_instance[db][table_name].find_one_and_update(query, { "$set": data }, upsert=True)
 
         return result
 
     @staticmethod
-    def list(db, table_name, query):
+    def list(db, table_name, query, projection):
         format_query(query)
-        return list(mongo_instance[db][table_name].find(query))
+        return list(mongo_instance[db][table_name].find(query, projection))
 
     @staticmethod
     def remove(db, table_name, query):
