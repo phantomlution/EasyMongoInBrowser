@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 import requests
-from flask import Blueprint, request
+from flask import Blueprint, request, Response
 
 proxy_api = Blueprint('proxy_api', __name__, url_prefix='/proxy')
 
@@ -23,11 +23,17 @@ def get_data():
 
     request_func = getattr(session, request_method.lower())
 
-    resp = request_func(url=url, headers=headers, params=query, data=data)
+    resp = request_func(url=url, headers=headers, params=query, data=data, verify=False)
 
     resp.close()
 
-    return resp.content
+    response = Response(resp.content)
+
+    response.headers['Access-Control-Expose-Headers'] = 'x-cookie'
+    if 'set-cookie' in resp.headers:
+        response.headers['x-cookie'] = resp.headers['set-cookie']
+
+    return response
 
 
 @proxy_api.route('/image', methods=['GET'])
