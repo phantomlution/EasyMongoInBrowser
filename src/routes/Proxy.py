@@ -19,13 +19,11 @@ def get_data():
 
     data = params.get('data')
 
-    cookies = params.get('cookies')
-
     request_method = params.get('method', 'get')
 
     request_func = getattr(session, request_method.lower())
 
-    resp = request_func(url=url, headers=headers, cookies=cookies, params=query, data=data, verify=False)
+    resp = request_func(url=url, headers=headers, params=query, data=data, verify=False)
 
     resp.close()
 
