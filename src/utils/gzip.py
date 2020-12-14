@@ -1,4 +1,4 @@
-import gzip
+from gzip import GzipFile
 from io import BytesIO
 
 from flask import request
@@ -23,7 +23,7 @@ class Gzip(object):
             return response
 
         gzip_buffer = BytesIO()
-        gzip_file = gzip.GzipFile(mode='wb', compresslevel=self.compress_level, fileobj=gzip_buffer)
+        gzip_file = GzipFile(mode='wb', compresslevel=self.compress_level, fileobj=gzip_buffer)
         gzip_file.write(response.get_data())
         gzip_file.close()
         response.set_data(gzip_buffer.getvalue())
