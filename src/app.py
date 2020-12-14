@@ -2,15 +2,12 @@
 from flask import Flask
 from routes.Mongo import mongo_api
 from routes.Proxy import proxy_api
-from utils.compress import Gzip
 
 from flask_cors import CORS
 
 app = Flask(__name__)
 
 CORS(app)
-
-Gzip(app)
 
 app.register_blueprint(mongo_api)
 app.register_blueprint(proxy_api)
