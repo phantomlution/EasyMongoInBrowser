@@ -2,7 +2,7 @@
 from flask import Flask
 from routes.Mongo import mongo_api
 from routes.Proxy import proxy_api
-from utils.gzip import Gzip
+from utils.compress import Gzip
 
 from flask_cors import CORS
 
