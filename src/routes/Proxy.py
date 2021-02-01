@@ -19,6 +19,8 @@ def get_data():
 
     data = params.get('data')
 
+    charset = params.get('charset')
+
     request_method = params.get('method', 'get')
 
     request_func = getattr(session, request_method.lower())
@@ -27,7 +29,12 @@ def get_data():
 
     resp.close()
 
-    response = Response(resp.content)
+    raw_content = resp.content
+
+    if charset:
+        raw_content = raw_content.decode(charset).encode('utf-8')
+
+    response = Response(raw_content)
 
     response.headers['Access-Control-Expose-Headers'] = 'x-cookie'
     if 'set-cookie' in resp.headers:
