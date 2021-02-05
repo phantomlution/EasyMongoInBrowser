@@ -38,4 +38,4 @@ class MongoService:
     @staticmethod
     def remove(db, table_name, query):
         format_query(query)
-        return mongo_instance[db][table_name].find_one_and_delete(query)
+        return mongo_instance[db][table_name].remove(query)
