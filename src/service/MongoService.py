@@ -5,7 +5,6 @@ from bson.objectid import ObjectId
 mongo_instance = MongoClient('mongodb://localhost:27017')
 
 
-# 更新 _id
 def format_query(query):
     if '_id' in query:
         query['_id'] = ObjectId(query['_id'])
@@ -39,3 +38,9 @@ class MongoService:
     def remove(db, table_name, query):
         format_query(query)
         return mongo_instance[db][table_name].remove(query)
+
+    @staticmethod
+    def page(db, table_name, query, page_number, page_size):
+        format_query(query)
+
+        return list(mongo_instance[db][table_name].find(query).skip(page_number * page_size).limit(page_size))

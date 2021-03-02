@@ -78,3 +78,18 @@ def list_data():
     projection = params.get('projection', None)
 
     return MongoService.list(db, table_name, query, projection)
+
+
+@mongo_api.route('/page', methods=['POST'])
+@flask_response
+def page_data():
+    params = request.get_json()
+
+    db = params['db']
+    table_name = params['tableName']
+    query = params.get('query', {})
+
+    page_number = params.get('pageNumber', 1)
+    page_size = params.get('pageSize', 20)
+
+    return MongoService.page(db, table_name, query, page_number, page_size)
