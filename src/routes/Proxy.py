@@ -25,17 +25,7 @@ def get_data():
 
     request_func = getattr(session, request_method.lower())
 
-    cookies = {}
-
-    cookie_str = headers.get('cookie', None)
-
-    if cookie_str:
-        headers.pop('cookie', None)
-        for cookie_str_item in cookie_str.split(';'):
-            cookie_result = cookie_str_item.split('=')
-            cookies[cookie_result[0]] = cookie_result[1]
-
-    resp = request_func(url=url, headers=headers, params=query, data=data, verify=False, cookies=cookies)
+    resp = request_func(url=url, headers=headers, params=query, data=data, verify=False)
 
     resp.close()
 
