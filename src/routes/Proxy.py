@@ -11,7 +11,7 @@ session = requests.Session()
 def get_data():
     params = request.get_json()
 
-    url = params['url']
+    url = params.get('url')
 
     headers = params.get('headers')
 
@@ -19,13 +19,15 @@ def get_data():
 
     data = params.get('data')
 
+    cookies = params.get('cookies', {})
+
     charset = params.get('charset')
 
     request_method = params.get('method', 'get')
 
     request_func = getattr(session, request_method.lower())
 
-    resp = request_func(url=url, headers=headers, params=query, data=data, verify=False)
+    resp = request_func(url, headers=headers, params=query, data=data, verify=False, cookies=cookies)
 
     resp.close()
 
