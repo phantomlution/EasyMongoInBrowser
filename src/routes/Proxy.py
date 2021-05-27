@@ -38,9 +38,15 @@ def get_data():
 
     response = Response(raw_content)
 
+    cookie_arr = []
+
+    for item in resp.cookies:
+        cookie_arr.append(item.name + '=' + item.value)
+
     response.headers['Access-Control-Expose-Headers'] = 'x-cookie'
-    if 'set-cookie' in resp.headers:
-        response.headers['x-cookie'] = resp.headers['set-cookie']
+
+    if len(cookie_arr) > 0:
+        response.headers['x-cookie'] = '; '.join(cookie_arr)
 
     return response
 
