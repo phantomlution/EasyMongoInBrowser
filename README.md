@@ -21,3 +21,6 @@ But maybe i will rewrite the code with VERT.X 4.0.
 Anyone who is interested in making personal toolkit in Javascript. please leave a issue in this project.
 
 ## Let's make personal application development easier.
+
+## When using selenium
+make sure browser was installed and driver file in /usr/bin or /usr/bin/local
