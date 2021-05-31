@@ -4,6 +4,8 @@ from flask import Blueprint, request, Response
 
 proxy_api = Blueprint('proxy_api', __name__, url_prefix='/proxy')
 
+session = requests.session()
+
 
 @proxy_api.route('/get', methods=['POST'])
 def get_data():
@@ -21,11 +23,13 @@ def get_data():
 
     charset = params.get('charset')
 
+    timeout = params.get('timeout', 3)
+
     request_method = params.get('method', 'get')
 
-    request_func = getattr(requests, request_method.lower())
+    request_func = getattr(session, request_method.lower())
 
-    resp = request_func(url, headers=headers, params=query, data=data, verify=False, cookies=cookies)
+    resp = request_func(url, headers=headers, params=query, data=data, verify=False, cookies=cookies, timeout=timeout)
 
     resp.close()
 
@@ -53,7 +57,7 @@ def get_data():
 def get_image():
     url = request.args.get('url')
 
-    resp = requests.get(url)
+    resp = session.get(url)
 
     resp.close()
 
