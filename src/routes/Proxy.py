@@ -57,15 +57,8 @@ def get_data():
 def get_image():
     url = request.args.get('url')
 
-    charset = request.args.get('charset')
-
     resp = session.get(url)
 
     resp.close()
 
-    content = resp.content
-
-    if charset:
-        content = content.decode(charset)
-
-    return content
+    return resp.content
