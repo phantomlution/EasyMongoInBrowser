@@ -8,7 +8,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
-CORS(app)
+CORS(app, max_age=60 * 60 * 24)
 
 app.register_blueprint(mongo_api)
 app.register_blueprint(proxy_api)
