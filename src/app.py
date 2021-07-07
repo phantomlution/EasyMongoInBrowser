@@ -3,10 +3,12 @@ from flask import Flask, request
 from routes.Mongo import mongo_api
 from routes.Proxy import proxy_api
 from routes.Selenium import selenium_api
+from utils.flask_gzip import Gzip
 
 from flask_cors import CORS
 
 app = Flask(__name__)
+gzip = Gzip(app)
 
 CORS(app, max_age=60 * 60 * 24)
 
