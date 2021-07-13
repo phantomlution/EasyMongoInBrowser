@@ -30,9 +30,13 @@ class MongoService:
         return result
 
     @staticmethod
-    def list(db, table_name, query, projection):
+    def list(db, table_name, query, projection, sort):
         format_query(query)
-        return list(mongo_instance[db][table_name].find(query, projection))
+
+        if sort is None:
+            return list(mongo_instance[db][table_name].find(query, projection))
+        else:
+            return list(mongo_instance[db][table_name].find(query, projection)).sort(sort)
 
     @staticmethod
     def remove(db, table_name, query):

@@ -76,8 +76,9 @@ def list_data():
     table_name = params['tableName']
     query = params.get('query', {})
     projection = params.get('projection', None)
+    sort = params.get('sort', None)
 
-    return MongoService.list(db, table_name, query, projection)
+    return MongoService.list(db, table_name, query, projection, sort)
 
 
 @mongo_api.route('/page', methods=['POST'])
