@@ -36,7 +36,10 @@ def get_data():
     raw_content = resp.content
 
     if charset:
-        raw_content = raw_content.decode(charset).encode('utf-8')
+        try:
+            raw_content = raw_content.decode(charset).encode('utf-8')
+        except:
+            pass
 
     response = Response(raw_content)
 
