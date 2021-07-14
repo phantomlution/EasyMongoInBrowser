@@ -67,6 +67,7 @@ def query_data():
     return MongoService.list(db, table_name, query)
 
 
+# sort: List<k, v> (k: sortField, v: sortDirection)
 @mongo_api.route('/list', methods=['POST'])
 @flask_response
 def list_data():

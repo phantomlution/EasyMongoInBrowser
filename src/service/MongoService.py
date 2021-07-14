@@ -36,7 +36,10 @@ class MongoService:
         if sort is None:
             return list(mongo_instance[db][table_name].find(query, projection))
         else:
-            return list(mongo_instance[db][table_name].find(query, projection)).sort(sort)
+            sort_rule_list = []
+            for sort_rule in sort:
+                sort_rule_list.append((sort_rule['k'], sort_rule['v']))
+            return list(mongo_instance[db][table_name].find(query, projection).sort(sort_rule_list))
 
     @staticmethod
     def remove(db, table_name, query):
