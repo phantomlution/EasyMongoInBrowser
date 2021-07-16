@@ -36,4 +36,4 @@ def handle_chunking():
 if __name__ == '__main__':
     port = 5001
     print('server run at:' + str(port))
-    app.run(port=port, host='0.0.0.0')
+    app.run(port=port, host='0.0.0.0', threaded=True)
