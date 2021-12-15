@@ -51,3 +51,8 @@ class MongoService:
         format_query(query)
 
         return list(mongo_instance[db][table_name].find(query).skip(page_number * page_size).limit(page_size))
+
+    @staticmethod
+    def count(db, table_name, query):
+        format_query(query)
+        return mongo_instance[db][table_name].count(query)

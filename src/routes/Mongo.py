@@ -95,3 +95,15 @@ def page_data():
     page_size = params.get('pageSize', 20)
 
     return MongoService.page(db, table_name, query, page_number, page_size)
+
+
+@mongo_api.route('/count', methods=['POST'])
+@flask_response
+def count():
+    params = request.get_json()
+
+    db = params['db']
+    table_name = params['tableName']
+    query = params.get('query', {})
+
+    return MongoService.count(db, table_name, query)
