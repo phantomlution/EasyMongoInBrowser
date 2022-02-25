@@ -24,9 +24,16 @@ def resolve_cookie():
 
     sleep = params.get('sleep', 1)
 
+    strategy = params.get('strategy', '')
+
     driver = webdriver.Chrome(chrome_options=chrome_options)
 
     driver.get(url)
+
+    # seleniumDefense: try for extra time
+    if strategy == 'seleniumDefense':
+        time.sleep(0.1)
+        driver.get(url)
 
     time.sleep(sleep)
 
