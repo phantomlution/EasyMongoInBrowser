@@ -4,7 +4,7 @@ from flask import Blueprint, request, Response
 
 proxy_api = Blueprint('proxy_api', __name__, url_prefix='/proxy')
 
-session = requests.session()
+session = requests
 
 
 @proxy_api.route('/get', methods=['POST'])
