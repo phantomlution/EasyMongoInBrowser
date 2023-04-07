@@ -4,7 +4,7 @@ from flask import Blueprint, request, Response
 
 proxy_api = Blueprint('proxy_api', __name__, url_prefix='/proxy')
 
-session = requests
+session = requests.session()
 
 
 @proxy_api.route('/get', methods=['POST'])
@@ -25,9 +25,14 @@ def get_data():
 
     timeout = params.get('timeout', 3)
 
+    new_connection = params.get('newConnection', False)
+
     request_method = params.get('method', 'get')
 
-    request_func = getattr(session, request_method.lower())
+    if new_connection:
+        request_func = getattr(requests, request_method.lower())
+    else:
+        request_func = getattr(session, request_method.lower())
 
     resp = request_func(url, headers=headers, params=query, data=data, verify=False, cookies=cookies, timeout=timeout)
 
