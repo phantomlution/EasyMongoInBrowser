@@ -25,9 +25,8 @@ class MongoService:
     def update(db, table_name, query, data):
         format_query(query)
         
-        result = mongo_instance[db][table_name].find_one_and_update(query, { "$set": data }, upsert=True)
+        result = mongo_instance[db][table_name].update_many(query, { "$set": data }, upsert=True)
 
-        return result
 
     @staticmethod
     def list(db, table_name, query, projection, sort):
