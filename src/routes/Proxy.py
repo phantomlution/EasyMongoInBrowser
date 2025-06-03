@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 import requests
+import json
 from flask import Blueprint, request, Response
+
 
 proxy_api = Blueprint('proxy_api', __name__, url_prefix='/proxy')
 
@@ -12,9 +14,6 @@ def get_data():
     params = request.get_json()
 
     url = params.get('url')
-
-    if url == 'https://gw.newrank.cn/api/mainRank/nr/mainRank/hotContent/getDetailUrl':
-         pass
 
     headers = params.get('headers')
 
@@ -64,6 +63,33 @@ def get_data():
         response.headers['x-cookie'] = '; '.join(cookie_arr)
 
     return response
+
+
+@proxy_api.route('/form', methods=['POST'])
+def post_form():
+    url = request.args.get('url')
+
+    headers = json.loads(request.args.get('headers'))
+
+    if 'file' in request.files:
+        file = request.files['file']
+        files = {'file': (file.filename, file.stream, file.mimetype)}
+    else:
+        files = None
+
+    data = request.form.to_dict()
+
+    resp = requests.post(url=url, files=files, data=data, headers=headers)
+
+    resp.close()
+
+    raw_content = resp.content
+
+    response = Response(raw_content)
+
+    return response
+
+
 
 
 @proxy_api.route('/image', methods=['GET'])
