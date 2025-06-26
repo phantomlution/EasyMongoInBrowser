@@ -29,6 +29,8 @@ def get_data():
 
     timeout = params.get('timeout', 3)
 
+    proxies = params.get('proxy')
+
     new_connection = params.get('newConnection', False)
 
     request_method = params.get('method', 'get')
@@ -38,7 +40,7 @@ def get_data():
     else:
         request_func = getattr(session, request_method.lower())
 
-    resp = request_func(url, headers=headers, params=query, data=data, json=json, verify=False, cookies=cookies, timeout=timeout)
+    resp = request_func(url, headers=headers, proxies=proxies, params=query, data=data, json=json, verify=False, cookies=cookies, timeout=timeout)
 
     resp.close()
 
