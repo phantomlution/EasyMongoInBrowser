@@ -2,12 +2,25 @@
 import requests
 import json
 from flask import Blueprint, request, Response
-import os
+from requests.adapters import HTTPAdapter
+from urllib3.util import Retry
 
 
 proxy_api = Blueprint('proxy_api', __name__, url_prefix='/proxy')
 
 session = requests.session()
+
+
+# 定义重试策略
+retry_strategy = Retry(
+    total=3,  # 最大重试次数（包括第一次请求）
+    status_forcelist=[500, 502, 503, 504]  # 遇到这些状态码时重试（可选）
+)
+
+# 将重试策略应用到 Session 的 HTTP 和 HTTPS 适配器
+adapter = HTTPAdapter(max_retries=retry_strategy)
+session.mount("http://", adapter)
+session.mount("https://", adapter)
 
 
 @proxy_api.route('/get', methods=['POST'])
@@ -32,17 +45,9 @@ def get_data():
 
     proxies = params.get('proxy')
 
-    new_connection = params.get('newConnection', False)
-
     request_method = params.get('method', 'get')
 
-    process_name = os.path.basename(os.sys.argv[0])
-    print("当前进程名称:", process_name)  # 通常是脚本文件名，如 'test.py'
-
-    if new_connection:
-        request_func = getattr(requests, request_method.lower())
-    else:
-        request_func = getattr(session, request_method.lower())
+    request_func = getattr(session, request_method.lower())
 
     resp = request_func(url, headers=headers, proxies=proxies, params=query, data=data, json=json, cookies=cookies, timeout=timeout)
 
