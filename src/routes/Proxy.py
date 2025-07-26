@@ -2,6 +2,7 @@
 import requests
 import json
 from flask import Blueprint, request, Response
+import os
 
 
 proxy_api = Blueprint('proxy_api', __name__, url_prefix='/proxy')
@@ -35,12 +36,15 @@ def get_data():
 
     request_method = params.get('method', 'get')
 
+    process_name = os.path.basename(os.sys.argv[0])
+    print("当前进程名称:", process_name)  # 通常是脚本文件名，如 'test.py'
+
     if new_connection:
         request_func = getattr(requests, request_method.lower())
     else:
         request_func = getattr(session, request_method.lower())
 
-    resp = request_func(url, headers=headers, proxies=proxies, params=query, data=data, json=json, verify=False, cookies=cookies, timeout=timeout)
+    resp = request_func(url, headers=headers, proxies=proxies, params=query, data=data, json=json, cookies=cookies, timeout=timeout)
 
     resp.close()
 
