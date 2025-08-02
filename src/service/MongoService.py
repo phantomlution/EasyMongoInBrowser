@@ -55,3 +55,7 @@ class MongoService:
     def count(db, table_name, query):
         format_query(query)
         return mongo_instance[db][table_name].count(query)
+
+    @staticmethod
+    def drop(db, table_name):
+        return mongo_instance[db][table_name].drop()

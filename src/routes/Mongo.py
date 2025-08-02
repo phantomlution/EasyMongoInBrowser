@@ -107,3 +107,13 @@ def count():
     query = params.get('query', {})
 
     return MongoService.count(db, table_name, query)
+
+@mongo_api.route('/drop', methods=['POST'])
+@flask_response
+def drop():
+    params = request.get_json()
+
+    db = params['db']
+    table_name = params['tableName']
+
+    return MongoService.drop(db, table_name)
