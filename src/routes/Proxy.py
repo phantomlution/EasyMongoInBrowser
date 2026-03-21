@@ -9,6 +9,46 @@ proxy_api = Blueprint('proxy_api', __name__, url_prefix='/proxy')
 session = requests.session()
 
 
+@proxy_api.route('/request', methods=['GET', 'POST'])
+def proxy():
+    # 1. 获取目标基础 URL
+    url = request.args.get('url')
+    if not url:
+        return "Missing 'proxy' parameter", 400
+
+    # 3. 准备转发的 Headers (使用 iteritems 遍历)
+    headers = {k: v for k, v in request.headers.iteritems() if k.lower() != 'host'}
+
+    # 4. 准备查询参数，排除 'proxy' 字段本身
+    params = {k: v for k, v in request.args.iteritems() if k != 'proxy'}
+
+    try:
+        # 5. 转发请求
+        resp = requests.request(
+            method=request.method,
+            url=url,
+            headers=headers,
+            data=request.get_data(),
+            cookies=request.cookies,
+            params=params,
+            allow_redirects=False
+        )
+
+        # 6. 过滤掉不应转发回前端的响应头
+        excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
+        resp_headers = [
+            (name, value) for name, value in resp.raw.headers.items()
+            if name.lower() not in excluded_headers
+        ]
+
+        # 7. 构造并返回响应
+        return Response(resp.content, resp.status_code, resp_headers)
+
+    except Exception as e:
+        # Python 2 的异常处理
+        return "Proxy Error: %s" % str(e), 500
+
+
 @proxy_api.route('/get', methods=['POST'])
 def get_data():
     params = request.get_json()
