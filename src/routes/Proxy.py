@@ -21,7 +21,7 @@ def proxy():
             headers=params.get('headers'),
             data=params.get('data'),
             # cookies=request.cookies,
-            params=request.get('params'),
+            params=params.get('params'),
             allow_redirects=False
         )
 
